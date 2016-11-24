@@ -1,0 +1,74 @@
+{
+  "intents":[
+    {
+      "intent":"PlaceOrderIntent",
+      "slots": 
+      [
+          { 
+            "name": "PlaceOrder", 
+            "type": "string"
+          }
+      ]
+    },
+    {
+      "intent": "TrackOrderIntent",
+      "slots":
+      [
+          {
+            "name": "TrackOrder",
+            "type": "string"
+          }
+      ]
+    },  
+    {
+      "intent": "PizzaSizeIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSize",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaSauceIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSauce",
+          "type": "LIST_OF_SAUCE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaCheeseIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaCheese",
+          "type": "LIST_OF_CHEESE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaMeatIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaMeat",
+          "type": "LIST_OF_MEAT"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaVeggiesIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaVeggies",
+          "type": "LIST_OF_VEGGIES"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "intents":[
+    {
+      "intent":"PlaceOrderIntent",
+      "slots": 
+      [
+          { 
+            "name": "PlaceOrder", 
+            "type": "AMAZON.LITERAL"
+          }      
+      ]
+    },
+    {
+      "intent": "TrackOrderIntent",
+      "slots":
+      [
+          {
+            "name": "TrackOrder",
+            "type": "AMAZON.LITERAL"
+          }
+      ]
+    },  
+    {
+      "intent": "PizzaSizeIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSize",
+          "type": "AMAZON.LITERAL"
+        },
+        {
+          "name": "PizzaInches",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaSauceIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSauce",
+          "type": "LIST_OF_SAUCE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaCheeseIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaCheese",
+          "type": "LIST_OF_CHEESE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaMeatIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaMeat",
+          "type": "LIST_OF_MEAT"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaVeggiesIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaVeggies",
+          "type": "LIST_OF_VEGGIES"
+        }
+      ]
+    },
+    {
+      "intent": "AddAnotherPizzaIntent",
+      "slots":
+      [
+        {
+          "name": "AddAnotherPizza",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "DoNotAddPizzaIntent",
+      "slots":
+      [
+        {
+          "name": "DoNotAddPizza",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }    
+  ]
+}
