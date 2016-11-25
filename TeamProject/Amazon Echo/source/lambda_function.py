@@ -40,7 +40,7 @@ def build_response(session_attributes, speechlet_response):
     
 # --------------- Functions that control the skill's behavior ------------------
 
-def get_welcome_response(session):
+def get_welcome_response():
     """ If we wanted to initialize the session to have some attributes we could
     add those here
     """
@@ -61,7 +61,7 @@ def get_welcome_response(session):
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
-def handle_place_order(session):
+def handle_place_order():
     #crete a new order
     session_attributes = {}
     card_title = "order a pizza"
@@ -272,7 +272,7 @@ def on_launch(launch_request, session):
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
     
-    return get_welcome_response(session)
+    return get_welcome_response()
 
 
 def on_intent(intent_request, session):
@@ -286,7 +286,7 @@ def on_intent(intent_request, session):
 
     # Dispatch to your skill's intent handlers
     if intent_name == "PlaceOrderIntent":
-        return handle_place_order(session)
+        return handle_place_order()
     if intent_name == "PizzaSizeIntent":
         return handle_pizza_size(intent,session)
     if intent_name == "PizzaSauceIntent":
