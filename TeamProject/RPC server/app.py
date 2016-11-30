@@ -11,6 +11,7 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 
@@ -45,7 +46,7 @@ def get_credentials():
         Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
+    credential_dir = os.path.join(home_dir, 'credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
@@ -53,20 +54,20 @@ def get_credentials():
 
     store = Storage(credential_path)
     credentials = store.get()
+    
     if not credentials or credentials.invalid:
         flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
-            credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
 
 
 @app.route('/menu/<section>', methods=['GET'])
 def getMenu(section):
-    credentials = get_credentials()
+    #credentials = get_credentials()
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('MyPizza.json', SCOPES)
     http = credentials.authorize(httplib2.Http())
     discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
                     'version=v4')
