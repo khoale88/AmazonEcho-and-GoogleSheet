@@ -1,0 +1,9 @@
+Here is the task left to do:
+- final format of menu and getMenu API
+- deisgn google sheet database in a way it can store more than 1 pizza per order with just 1 orderID
+(my suggestion is store different pizza on consecutive lines, but don't increase the orderID, dunno it it can be done)
+- implement post according to database design (should be dynamic)
+- design the status - time based (playing with timestamp) or state based (need someone to input the states)
+- query out status based on orderID
+- query out status by just asking check status (amazon echo generates the same customerID every time, we can leverage this)
+- get customer name/phone for extra features (optional)

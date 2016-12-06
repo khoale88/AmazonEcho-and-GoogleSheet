@@ -1,0 +1,143 @@
+PlaceOrderIntent Place order
+PlaceOrderIntent I would like to place an order
+PlaceOrderIntent Order Pizza
+PlaceOrderIntent Place order for pizza
+PlaceOrderIntent Yes place order
+
+TrackOrderIntent Track order
+TrackOrderIntent Check status
+TrackOrderIntent Check status of order
+TrackOrderIntent Track my order status
+TrackOrderIntent Track order status
+
+PizzaSizeIntent {PizzaSize} inches
+
+PizzaSauceIntent {PizzaSauce}
+PizzaSauceIntent {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent {PizzaSauce} {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent {PizzaSauce} {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Please add {PizzaSauce}
+PizzaSauceIntent Please add {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Please add {PizzaSauce} {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Please add {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Please add {PizzaSauce} {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Add {PizzaSauce}
+PizzaSauceIntent Add {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Add {PizzaSauce} {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Add {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Add {PizzaSauce} {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Please add Sauce {PizzaSauce}
+PizzaSauceIntent Please add Sauce {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Please add Sauce {PizzaSauce} {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Please add Sauce {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Please add Sauce {PizzaSauce} {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Add Sauce {PizzaSauce}
+PizzaSauceIntent Add Sauce {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Add Sauce {PizzaSauce} {PizzaSauce} {PizzaSauce}
+PizzaSauceIntent Add Sauce {PizzaSauce} and {PizzaSauce}
+PizzaSauceIntent Add Sauce {PizzaSauce} {PizzaSauce} and {PizzaSauce}
+ 
+PizzaCheeseIntent {PizzaCheese}
+PizzaCheeseIntent {PizzaCheese}
+PizzaCheeseIntent {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent {PizzaCheese} {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent {PizzaCheese} {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Please add {PizzaCheese}
+PizzaCheeseIntent Please add {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Please add {PizzaCheese} {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Please add {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Please add {PizzaCheese} {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Add {PizzaCheese}
+PizzaCheeseIntent Add {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Add {PizzaCheese} {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Add {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Add {PizzaCheese} {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Please add Sauce {PizzaCheese}
+PizzaCheeseIntent Please add Sauce {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Please add Sauce {PizzaCheese} {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Please add Sauce {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Please add Sauce {PizzaCheese} {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Add Sauce {PizzaCheese}
+PizzaCheeseIntent Add Sauce {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Add Sauce {PizzaCheese} {PizzaCheese} {PizzaCheese}
+PizzaCheeseIntent Add Sauce {PizzaCheese} and {PizzaCheese}
+PizzaCheeseIntent Add Sauce {PizzaCheese} {PizzaCheese} and {PizzaCheese}
+
+PizzaMeatIntent {PizzaMeat}
+PizzaMeatIntent {PizzaMeat}
+PizzaMeatIntent {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent {PizzaMeat} {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent {PizzaMeat} {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Please add {PizzaMeat}
+PizzaMeatIntent Please add {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Please add {PizzaMeat} {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Please add {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Please add {PizzaMeat} {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Add {PizzaMeat}
+PizzaMeatIntent Add {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Add {PizzaMeat} {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Add {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Add {PizzaMeat} {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Please add Sauce {PizzaMeat}
+PizzaMeatIntent Please add Sauce {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Please add Sauce {PizzaMeat} {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Please add Sauce {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Please add Sauce {PizzaMeat} {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Add Sauce {PizzaMeat}
+PizzaMeatIntent Add Sauce {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Add Sauce {PizzaMeat} {PizzaMeat} {PizzaMeat}
+PizzaMeatIntent Add Sauce {PizzaMeat} and {PizzaMeat}
+PizzaMeatIntent Add Sauce {PizzaMeat} {PizzaMeat} and {PizzaMeat}
+
+PizzaVeggiesIntent {PizzaVeggies}
+PizzaVeggiesIntent {PizzaVeggies}
+PizzaVeggiesIntent {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Please add {PizzaVeggies}
+PizzaVeggiesIntent Please add {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Please add {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Please add {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Please add {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Add {PizzaVeggies}
+PizzaVeggiesIntent Add {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Add {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Add {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Add {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Please add Sauce {PizzaVeggies}
+PizzaVeggiesIntent Please add Sauce {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Please add Sauce {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Please add Sauce {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Please add Sauce {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Add Sauce {PizzaVeggies}
+PizzaVeggiesIntent Add Sauce {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Add Sauce {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
+PizzaVeggiesIntent Add Sauce {PizzaVeggies} and {PizzaVeggies}
+PizzaVeggiesIntent Add Sauce {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
+
+AddAnotherPizzaIntent Yes
+AddAnotherPizzaIntent Yes please
+AddAnotherPizzaIntent Add another pizza
+AddAnotherPizzaIntent Yes i would like to add another pizza
+AddAnotherPizzaIntent Add pizza
+AddAnotherPizzaIntent Add one pizza
+AddAnotherPizzaIntent Add a pizza
+AddAnotherPizzaIntent Yes one pizza
+AddAnotherPizzaIntent Yeah
+AddAnotherPizzaIntent Yeah please
+AddAnotherPizzaIntent Add another pizza
+AddAnotherPizzaIntent Yeah i would like to add another pizza
+AddAnotherPizzaIntent Yeah one pizza
+
+DoNotAddPizzaIntent No
+DoNotAddPizzaIntent No thank you
+DoNotAddPizzaIntent No thanks
+DoNotAddPizzaIntent Dont add pizza
+DoNotAddPizzaIntent No please
+DoNotAddPizzaIntent nope
+DoNotAddPizzaIntent nope thank you
+DoNotAddPizzaIntent nope thanks

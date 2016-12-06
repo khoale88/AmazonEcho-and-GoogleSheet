@@ -1,0 +1,82 @@
+{
+  "intents":[
+    {
+      "intent":"PlaceOrderIntent"
+    },
+    {
+      "intent": "TrackOrderIntent",
+      "slots":
+      [
+          {
+            "name": "TrackOrder",
+            "type": "AMAZON.NUMBER"
+          }
+      ]
+    },  
+    {
+      "intent": "PizzaSizeIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSize",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaSauceIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaSauce",
+          "type": "LIST_OF_SAUCE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaCheeseIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaCheese",
+          "type": "LIST_OF_CHEESE"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaMeatIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaMeat",
+          "type": "LIST_OF_MEAT"
+        }
+      ]
+    },
+    {
+      "intent": "PizzaVeggiesIntent",
+      "slots":
+      [
+        {
+          "name": "PizzaVeggies",
+          "type": "LIST_OF_VEGGIES"
+        }
+      ]
+    },
+    {
+      "intent": "AddAnotherPizzaIntent"
+    },
+    {
+      "intent": "DoNotAddPizzaIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }    
+  ]
+}

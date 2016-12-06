@@ -65,7 +65,7 @@ def handle_pizza_size(intent,session):
     
     #build sauce speech
     sauce_speech = "Please let me know which of the following sauces would you like to Add to base,"
-    sauce_speech += str(', '.join(session_attributes['menu']['sauce'])) + ", all sauce, or no sauce"
+    sauce_speech += str(', '.join(session_attributes['menu']['sauce'])) + ", All sauce, or No sauce"
 
     #build output
     speech_output = "You have choosen %s inches pizza. " %(session_attributes['current_pizza']['size'])
@@ -106,7 +106,7 @@ def handle_pizza_sauce(intent,session):
 
     #cheese speech, need to add all cheese?
     cheese_speech = "Please let me know which of the following cheeses would you like to Add, "
-    cheese_speech += ', '.join(session_attributes['menu']['cheese']) + ", all cheese, or No Cheese"
+    cheese_speech += ', '.join(session_attributes['menu']['cheese']) + ", All Cheese, or No Cheese"
 
     #build output
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['sauce'])
@@ -147,7 +147,7 @@ def handle_pizza_cheese(intent,session):
 
     #build meat speech
     meat_speech = "Please let me know which of the following meat would you like to Add, "
-    meat_speech += ', '.join(session_attributes['menu']['meat']) + ", all meat, or no meat"
+    meat_speech += ', '.join(session_attributes['menu']['meat']) + ", All Meat, or No Meat"
 
     #build output
     speech_output = "You have choosen %s  on pizza base. " %(session_attributes['current_pizza']['cheese'])
@@ -221,11 +221,11 @@ def handle_pizza_veggies(intent,session):
         selected_veggies = veggies_response
     session_attributes['current_pizza']['veggies'] = selected_veggies
 
-    #finish this pizza
-    #order = session_attributes['order']
-    #order.append(session_attributes['current_pizza'])
-    #session_attributes['order'] = order
+    session_attributes['current_pizza']['veggies'] = veggies_response
 
+    #finish this pizza
+    pizzas = session_attributes['order']['pizzas']
+    pizzas.append(session_attributes['current_pizza'])
 
     #instruct to next
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['veggies'])
@@ -239,16 +239,18 @@ def handle_pizza_veggies(intent,session):
         card_title, speech_output, reprompt_text, should_end_session))
 
 def handle_session_end_request(session):
+    session_attributes = session.get('attributes')
     card_title = "Session Ended"
-    size = len(session['attributes']['order'])
-    # y = entire order 
+    size = len(session_attributes['order']['pizzas'])
+
+    #post order, get order ID_______________________________________________________________
     speech_output = "You have order %s pizza,"\
                     "Your order number is: 1234," \
                     "Thank you for using MOD Pizza automated pizza ordering system, " \
                     "Have a nice day! "%(size)
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
-    return build_response({}, build_speechlet_response(
+    return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
 
 # --------------- Events ------------------

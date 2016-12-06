@@ -1,5 +1,12 @@
 {
     "menu":{},
     "current_pizza":{},
-    "order":{}
+    "order":{
+        "pizzas":[],
+        "customer":{
+            "name":"",
+            "phone_number":""
+        },
+        "order ID":""
+    }
 }
