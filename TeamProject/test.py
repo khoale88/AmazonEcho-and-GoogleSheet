@@ -48,4 +48,31 @@ def postOrder(order):
     print r.status_code
     print r.content
 
-postOrder(data)
+ids = [1, 3, 5]
+
+def getOrderStatus(orderIds):
+  status = []
+  for orderId in orderIds:
+    endpoint = '/order/%s/status'%(orderId)
+    r = requests.get(url = host+endpoint)
+    if r.status_code == 200:
+       st = {}
+       st['orderId'] = orderId
+       st['status'] = str(json.loads(r.content)['status'])
+       status.append(st)
+  return status
+
+def autoOrderStatus(AMZNId):
+  endpoint = '/orders/%s'%(AMZNId)
+  r = requests.get(url = host+endpoint)
+  if r.status_code == 200:
+    result = []
+    for orderStatus in json.loads(r.content)['orders']:
+      if orderStatus[2] != 'delivered':
+        result.append([str(orderStatus[x]) for x in [0,2]])
+    return result
+
+print autoOrderStatus("dsfsdfsdfsdfsdf")
+
+
+
