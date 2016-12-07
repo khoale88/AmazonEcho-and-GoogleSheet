@@ -21,3 +21,16 @@ DoNotAddPizzaIntent finish
 DoNotAddPizzaIntent Don't add pizza
 DoNotAddPizzaIntent finish ordering
 DoNotAddPizzaIntent finish it
+
+
+
+--------------------------------------------
+
+    speech_output = "You have choosen to place an order. " \
+                    "Please let me know if you would like to order Small or Large Pizza,"\
+                    " Small is 6 inches, Large is 11 inches pizza,"\
+                    "Please respond by saying, Small or Large"
+
+LIST_CRUST_SIZE
+Small
+Large
