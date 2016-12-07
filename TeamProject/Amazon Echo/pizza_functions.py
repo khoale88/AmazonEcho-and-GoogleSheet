@@ -9,10 +9,15 @@ def getMenu(section):
     endpoint = "/menu/"+section
     r = requests.get(url = host+endpoint)
     if r.status_code == 200:
+        output = []
         s = json.loads(r.content)
-        return [str(item) for sublist in s for item in sublist]
+        for sublist in s:
+            item = {}
+            item['name'] = str(sublist[0])
+            item['price'] = str(sublist[1])
+            output.append(item)
+        return output
 
-        
 
 # --------------- Helpers that build all of the responses ----------------------
 

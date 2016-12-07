@@ -59,18 +59,21 @@ def handle_pizza_size(intent,session):
 
     #update pizza size
     session_attributes['current_pizza']['crust size'] = intent['slots'][card_title]['value']
+    #check valid size
+    if session_attributes['current_pizza']['crust size'] != '6' and session_attributes['current_pizza']['crust size'] != '11':
+        return handle_place_order(intent,session)
 
     #instruct to sauce
     #only get sauce if it is the 1st time in this session - not yet in the menu
     if('sauce' not in session_attributes['menu']):
-        session_attributes['menu']['sauce'] = getMenu('sauce')
+        session_attributes['menu']['sauce'] = getMenu('sauce') 
     
     #build sauce speech
     sauce_speech = "Please let me know which of the following sauces would you like to Add to base,"
     sauce_speech += str(', '.join(session_attributes['menu']['sauce'])) + ", All sauce, or No sauce"
 
     #build output
-    speech_output = "You have choosen %s inches pizza. " %(session_attributes['current_pizza']['crust size'])
+    speech_output = "You have choosen pizza of %s inches" %(session_attributes['current_pizza']['crust size'])
     speech_output += sauce_speech
 
     reprompt_text = "I did not receive a response, " 
@@ -90,16 +93,17 @@ def handle_pizza_sauce(intent,session):
     card_title = 'PizzaSauce'
 
     #get the sauce response out
-    sauce_response = intent['slots'][card_title]['value']
-
-    #add sauce  
-    if ('no sauce' in sauce_response.lower()):
-        selected_sauce = 'no sauce'
-    elif ('all sauce' in sauce_response.lower()):
-        selected_sauce = ', '.join(session_attributes['menu']['sauce'])
-    else:
-        selected_sauce = sauce_response
-    session_attributes['current_pizza']['sauce'] = selected_sauce
+    if card_title in intent['slots']:
+        #get sauce out
+        sauce_response = intent['slots'][card_title]['value']
+        #add sauce  
+        if ('no sauce' in sauce_response.lower()):
+            selected_sauce = 'no sauce'
+        elif ('all sauce' in sauce_response.lower()):
+            selected_sauce = ', '.join(session_attributes['menu']['sauce'])
+        else:
+            selected_sauce = sauce_response
+        session_attributes['current_pizza']['sauce'] = selected_sauce
 
     #instruct to cheese
     #only get chees if it is not in the menu
@@ -126,21 +130,20 @@ def handle_pizza_cheese(intent,session):
     #check if a pizza goes through sauce - previous step
     if('current_pizza' not in session_attributes or
     'sauce' not in session_attributes['current_pizza']):
-        return handle_pizza_sauce(intent,session)
+        return handle_pizza_size(intent,session)
 
     card_title = 'PizzaCheese'
-
+    if card_title in intent['slots'] :
     #get the cheese out
-    cheese_response = intent['slots'][card_title]['value']
-
-    #add cheese  
-    if ('no cheese' in cheese_response.lower()):
-        selected_cheese = 'no cheese'
-    elif ('all cheese' in cheese_response.lower()):
-        selected_cheese = ', '.join(session_attributes['menu']['cheese'])
-    else:
-        selected_cheese = cheese_response
-    session_attributes['current_pizza']['cheese'] = selected_cheese
+        cheese_response = intent['slots'][card_title]['value']
+        #add cheese  
+        if ('no cheese' in cheese_response.lower()):
+            selected_cheese = 'no cheese'
+        elif ('all cheese' in cheese_response.lower()):
+            selected_cheese = ', '.join(session_attributes['menu']['cheese'])
+        else:
+            selected_cheese = cheese_response
+        session_attributes['current_pizza']['cheese'] = selected_cheese
 
     #instruct to meat
     #only get meat if it is not in the menu
@@ -167,21 +170,21 @@ def handle_pizza_meat(intent,session):
     #check if a pizza goes through cheese - previous step
     if('current_pizza' not in session_attributes or
     'cheese' not in session_attributes['current_pizza']):
-        return handle_pizza_cheese(intent,session)
+        return handle_pizza_sauce(intent,session)
 
     card_title = 'PizzaMeat'
-
-    #get the meat out
-    meat_response = intent['slots'][card_title]['value']
-
-    #update meat 
-    if ('no meat' in meat_response.lower()):
-        selected_meat = 'no meat'
-    elif ('all meat' in meat_response.lower()):
-        selected_meat = ', '.join(session_attributes['menu']['meat'])
-    else:
-        selected_meat = meat_response
-    session_attributes['current_pizza']['meat'] = selected_meat
+    #if valud slot type
+    if card_title in intent['slots']:
+        #get the meat out
+        meat_response = intent['slots'][card_title]['value']
+        #update meat 
+        if ('no meat' in meat_response.lower()):
+            selected_meat = 'no meat'
+        elif ('all meat' in meat_response.lower()):
+            selected_meat = ', '.join(session_attributes['menu']['meat'])
+        else:
+            selected_meat = meat_response
+        session_attributes['current_pizza']['meat'] = selected_meat
 
     #instruct to veggies
     #only get veggies if it is not in the menu
@@ -207,21 +210,21 @@ def handle_pizza_veggies(intent,session):
     #check if a pizza goes through meat - previous step
     if('current_pizza' not in session_attributes or
     'meat' not in session_attributes['current_pizza']):
-        return handle_pizza_meat(intent,session)
+        return handle_pizza_cheese(intent,session)
 
     card_title = 'PizzaVeggies'
 
-    #get the veggies out
-    veggies_response = intent['slots'][card_title]['value']
-
-    #update veggies
-    if ('no veggies' in veggies_response.lower()):
-        selected_veggies = 'no veggies'
-    elif ('all veggies' in veggies_response.lower()):
-        selected_veggies = ', '.join(session_attributes['menu']['veggies'])
-    else:
-        selected_veggies = veggies_response
-    session_attributes['current_pizza']['veggies'] = selected_veggies
+    if card_title in intent['slots']:
+        #get the veggies out
+        veggies_response = intent['slots'][card_title]['value']
+        #update veggies
+        if ('no veggies' in veggies_response.lower()):
+            selected_veggies = 'no veggies'
+        elif ('all veggies' in veggies_response.lower()):
+            selected_veggies = ', '.join(session_attributes['menu']['veggies'])
+        else:
+            selected_veggies = veggies_response
+        session_attributes['current_pizza']['veggies'] = selected_veggies
 
     #add quantity for testing
     session_attributes['current_pizza']['quantity'] = 1
@@ -247,18 +250,18 @@ def handle_session_end_request(intent, session):
     session_attributes = session.get('attributes',{})
     if('current_pizza' not in session_attributes or
     'veggies' not in session_attributes['current_pizza']):
-        return handle_pizza_veggies(intent, session)
+        return handle_pizza_meat(intent, session)
     card_title = "Session Ended"
     size = 0
     pizzas_speech = ""
     for pizza in session_attributes['order']['pizzas'] :
-        size += pizza['quantity']
+        size += int(pizza['quantity'])
         #quantity, size, sauce, cheese, meat, veggies
         pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s."\
                             %(pizza['quantity'],pizza['crust size'],pizza['sauce'],pizza['cheese'],pizza['meat'],pizza['veggies'])
     
     user = session.get('user',{})
-    session_attributes['order']['AMZN ID'] = user.get['userId']
+    session_attributes['order']['AMZN ID'] = user.get('userId','')
 
     order_number = 1234
     order_price = 15.76
@@ -308,13 +311,25 @@ def on_intent(intent_request, session):
     intent = intent_request['intent']
     intent_name = intent['name']
 
+    #current = placeorder
+
     # Dispatch to your skill's intent handlers
     if intent_name == "PlaceOrderIntent":
+        #if previous == "welcome"
+        #set previous == "placeorder"
         return handle_place_order(intent,session)
+        #
     if intent_name == "PizzaSizeIntent":
+        #if previous == "placeorder"
+        #set previous == "placeOrder"
         return handle_pizza_size(intent,session)
+        #else:
+            #
     if intent_name == "PizzaSauceIntent":
+        #if previous == "Size"
+        #set sauce
         return handle_pizza_sauce(intent,session)
+        #else size
     if intent_name == "PizzaCheeseIntent":
         return handle_pizza_cheese(intent,session)
     if intent_name == "PizzaMeatIntent":

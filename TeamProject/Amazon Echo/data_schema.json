@@ -1,5 +1,6 @@
 {
     "menu":{},
+    "previous state":"welcome",
     "current_pizza":{
         "crust size" : "",
         "sauce":"",
