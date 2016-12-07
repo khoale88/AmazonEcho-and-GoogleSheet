@@ -46,7 +46,12 @@ data = {
     }
 
 def postOrder(order):
-    endpoint = "/Order"
+    for pizza in order['pizzas']:
+      for key in ('cheese','meat','crust size','veggies','sauce'):
+        if 'no' in pizza[key]:
+          pizza[key] = ''
+    print order
+    endpoint = "/order"
     r = requests.post(url = host+endpoint, json = order)
     print r.status_code
     print r.content

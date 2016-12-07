@@ -19,10 +19,14 @@ def getMenu(section):
         return output
 
 def postOrder(order):
-    endpoint = "/Order"
+    for pizza in order['pizzas']:
+      for key in ('cheese','meat','crust size','veggies','sauce'):
+        if 'no' in pizza[key]:
+          pizza[key] = ''
+    endpoint = "/order"
     r = requests.post(url = host+endpoint, json = order)
     if r.status_code == 200:
-        return "12345"
+        return r.content
 
 
 # --------------- Helpers that build all of the responses ----------------------

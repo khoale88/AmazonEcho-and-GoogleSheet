@@ -276,16 +276,17 @@ def handle_session_end_request(intent, session):
     user = session.get('user',{})
     session_attributes['order']['AMZN ID'] = user.get('userId','')
 
-    order_number = postOrder(session_attributes['order'])
-    order_price = 15.76
-    dollar = int(order_price)
-    cents = int((order_price - dollar)*100)
+    order = json.loads(postOrder(session_attributes['order']))
+    orderId = order['orderId']
+    price = order['price']
+    dollar = int(price)
+    cents = int((price - dollar)*100)
 
     #post order, get order ID and price_______________________________________________________________
     speech_output = "You have order %d pizza."%(size)
     speech_output += pizzas_speech
-    speech_output +="Your order number is: %d." %(int(order_number))
-    speech_output +="your order price is %d dollars and %d cents," %(dollar,cents)
+    speech_output +="Your order number is: %d. " %(int(orderId))
+    speech_output +="Your order price is %d dollars and %d cents. " %(dollar,cents)
     speech_output +="Thank you for using MOD Pizza automated pizza ordering system, " \
                     "Have a nice day! "
     # Setting this to true ends the session and exits the skill.
