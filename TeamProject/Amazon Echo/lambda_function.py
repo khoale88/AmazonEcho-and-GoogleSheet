@@ -8,7 +8,7 @@ http://amzn.to/1LGWsLG
 """
 
 from __future__ import print_function
-from pizza_functions import build_response, build_speechlet_response,getMenu,postOrder
+from pizza_functions import build_response, build_speechlet_response,getMenu,postOrder,getOrderStatus,autoOrderStatus
 import json
     
 # --------------- Functions that control the skill's behavior ------------------
@@ -45,11 +45,21 @@ def handle_place_order(intent,session):
     del session_attributes['current_pizza']
     session_attributes['current_pizza'] = {}
 
+    #instruct to sauce
+    #only get sauce if it is the 1st time in this session - not yet in the menu
+    if('crust size' not in session_attributes['menu']):
+        session_attributes['menu']['crust size'] = {}
+        session_attributes['menu']['crust size'] = getMenu('crust')   
+
+    crust_speech =  "Please let me know which crust size would like to order, "
+    for cr in session_attributes['menu']['crust size']:
+        crust_speech += "%s inches for %s dollar" %(cr['name'],cr['price'])
+
     #instruct to size
-    speech_output = "You have choosen to place an order. " \
-                    "Please let me know if you would like to order 6 inches or 11 inches pizza"
-    reprompt_text = "I did not receive a response, " \
-                    "Please let me know if you would like to order 6 inches or 11 inches pizza"
+    speech_output = "You have choosen to place an order. " + crust_speech
+                    
+    reprompt_text = "I did not receive a response, " +crust_speech
+
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -267,14 +277,15 @@ def handle_pizza_veggies(intent,session):
     current_pizza = session_attributes['current_pizza']
     pizzas = session_attributes['order']['pizzas']
     pizzas.append(session_attributes['current_pizza'])
-    
 
     #instruct to next
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['veggies'])
-    speech_output += "do you want to add another pizza?"
+    speech_output += "If you want to add another pizza, please respond by saying, Add pizza, "\
+                     "If you don't want to add pizza, please resond by saying, finish order"
 
     reprompt_text = "I did not receive a response, " \
-                    "Do you want to add another pizza?"    
+                    "If you want to add another pizza, please respond by saying, Add pizza, "\
+                    "If you don't want to add pizza, please resond by saying, finish order." 
 
     #del session_attributes['current_pizza']
     #session_attributes['current_pizza'] = {}
@@ -317,6 +328,62 @@ def handle_session_end_request(intent, session):
     should_end_session = True
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, None, should_end_session))
+
+def track_order(intent,session):
+    #crete a new order
+    session_attributes = session.get('attributes',{})
+    card_title = "track order"
+    #initialize a menu
+    if('order' not in session_attributes):  
+        session_attributes = json.load(open("data_schema.json"))
+
+    session_attributes['current_pizza'] = {}
+
+    user = session.get('user',{})
+    AMZNId = user.get('userId','')
+    status = autoOrderStatus(AMZNId)
+    if len(status) == 0:
+        speech_output = "You have choosen to track an order. " \
+                        "Please let me know your order number"
+
+        reprompt_text = "I did not receive a response, " \
+                        "Please let me know your order number"
+
+        should_end_session = False
+        return build_response(session_attributes, build_speechlet_response(
+            card_title, speech_output, reprompt_text, should_end_session))
+    else:
+        status_speech = "Found %d orders. " %(len(status))
+        for stt in status:
+            status_speech += "Status of Order %d  is %s, "  %(int(stt[0]),stt[1])
+        speech_output = status_speech + "Thank you for choosing us"
+        
+        reprompt_text = ""
+                        
+        should_end_session = True
+        return build_response(session_attributes, build_speechlet_response(
+            card_title, speech_output, reprompt_text, should_end_session))
+
+
+def return_order_status(intent,session):
+    session_attributes = session.get('attributes',{})
+    card_title = 'OrderNumber'
+
+    #take order id input
+    orderIds = intent['slots'][card_title]['value'].split(" ")
+
+    status = getOrderStatus(orderIds)
+    #return status
+    speech_output = "Found %d orders. " %(len(status))
+    for stt in status:
+        speech_output += "Status of Order %d  is %s "  %(stt['orderId'],stt['status'])
+        speech_output += ",Thank you for choosing us"
+    
+    reprompt_text = ""
+                     
+    should_end_session = True
+    return build_response(session_attributes, build_speechlet_response(
+        card_title, speech_output, reprompt_text, should_end_session))
 
 # --------------- Events ------------------
 
@@ -380,6 +447,10 @@ def on_intent(intent_request, session):
         return handle_session_end_request(intent, session)
     if intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
         return handle_session_end_request(intent, session)
+    if intent_name == "TrackOrderIntent":
+        return track_order(intent,session)
+    if intent_name == "OrderIntent":
+        return return_order_status(intent,session)
     else:
         raise ValueError("Invalid intent")
 

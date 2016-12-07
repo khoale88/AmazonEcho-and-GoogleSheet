@@ -11,6 +11,7 @@ TrackOrderIntent Track my order status
 TrackOrderIntent Track order status
 
 PizzaSizeIntent {PizzaSize} inches
+PizzaSizeIntent {PizzaSize} inch
 
 PizzaSauceIntent {PizzaSauce}
 PizzaSauceIntent {PizzaSauce} {PizzaSauce}
@@ -119,25 +120,18 @@ PizzaVeggiesIntent Add Sauce {PizzaVeggies} {PizzaVeggies} {PizzaVeggies}
 PizzaVeggiesIntent Add Sauce {PizzaVeggies} and {PizzaVeggies}
 PizzaVeggiesIntent Add Sauce {PizzaVeggies} {PizzaVeggies} and {PizzaVeggies}
 
-AddAnotherPizzaIntent Yes
-AddAnotherPizzaIntent Yes please
 AddAnotherPizzaIntent Add another pizza
 AddAnotherPizzaIntent Yes i would like to add another pizza
 AddAnotherPizzaIntent Add pizza
 AddAnotherPizzaIntent Add one pizza
 AddAnotherPizzaIntent Add a pizza
-AddAnotherPizzaIntent Yes one pizza
-AddAnotherPizzaIntent Yeah
-AddAnotherPizzaIntent Yeah please
 AddAnotherPizzaIntent Add another pizza
 AddAnotherPizzaIntent Yeah i would like to add another pizza
-AddAnotherPizzaIntent Yeah one pizza
 
-DoNotAddPizzaIntent No
-DoNotAddPizzaIntent No thank you
-DoNotAddPizzaIntent No thanks
-DoNotAddPizzaIntent Dont add pizza
-DoNotAddPizzaIntent No please
-DoNotAddPizzaIntent nope
-DoNotAddPizzaIntent nope thank you
-DoNotAddPizzaIntent nope thanks
+DoNotAddPizzaIntent finish order
+DoNotAddPizzaIntent finish
+DoNotAddPizzaIntent Don't add pizza
+DoNotAddPizzaIntent finish ordering
+DoNotAddPizzaIntent finish it
+
+OrderIntent {OrderNumber}

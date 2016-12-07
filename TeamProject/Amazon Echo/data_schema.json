@@ -6,6 +6,7 @@
         "pizzas":[],
         "customer":{
             "name":"",
+            "address":"",
             "phone_number":""
         },
         "order ID":"",
