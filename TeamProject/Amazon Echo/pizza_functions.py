@@ -12,6 +12,8 @@ def getMenu(section):
         s = json.loads(r.content)
         return [str(item) for sublist in s for item in sublist]
 
+        
+
 # --------------- Helpers that build all of the responses ----------------------
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):

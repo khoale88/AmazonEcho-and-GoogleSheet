@@ -43,6 +43,7 @@ def handle_place_order(intent,session):
         session_attributes = json.load(open("data_schema.json"))
 
     session_attributes['current_pizza'] = {}
+
     #instruct to size
     speech_output = "You have choosen to place an order. " \
                     "Please let me know if you would like to order 6 inches or 11 inches pizza"
@@ -255,7 +256,9 @@ def handle_session_end_request(intent, session):
         #quantity, size, sauce, cheese, meat, veggies
         pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s."\
                             %(pizza['quantity'],pizza['crust size'],pizza['sauce'],pizza['cheese'],pizza['meat'],pizza['veggies'])
-    session_attributes['order']['AMZN ID'] = session_attributes['user']['userID']
+    
+    user = session.get('user',{})
+    session_attributes['order']['AMZN ID'] = user.get['userId']
 
     order_number = 1234
     order_price = 15.76
