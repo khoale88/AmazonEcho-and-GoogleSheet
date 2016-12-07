@@ -314,7 +314,6 @@ def getOrdersAmazonId(amazonId):
     allOrders = service.spreadsheets().values().batchGet(
         spreadsheetId=googleSheetId, ranges=range_names).execute()
 
-    #return jsonify(allOrders)
     orderIds = []
 
     orderIds.append(allOrders["valueRanges"][0]["values"])
