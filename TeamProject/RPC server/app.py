@@ -296,7 +296,7 @@ def checkStatus(orderid):
         valueInputOption="USER_ENTERED", body={'values': [[update]]}).execute()
 
     if status != "":
-        return jsonify({"status": update`})
+        return jsonify({"status": update})
 
     return jsonify({"error": "Order not found"})
 
