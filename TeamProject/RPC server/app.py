@@ -281,7 +281,7 @@ def checkStatus(orderid):
 def getOrdersAmazonId(amazonId):
     searchResult = []
     if(TRACK == 2):
-        return jsonify({"error": "No orders"})
+        return jsonify({"error": "No orders"}), 404
     orderIDRange = 'Track!A2:D' + '%s' % (TRACK - 1)
 
     range_names = [
