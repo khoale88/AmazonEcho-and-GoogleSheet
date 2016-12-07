@@ -25,23 +25,15 @@ data = {
       },
       "pizzas": [
         {
-          "cheese": "Mozzarella, Parmesan, Vegan Cheese",
+          "cheese": "no cheese",
           "meat": "Bacon, Grilled Chicken, Pepperoni",
           "crust size": "6",
-          "veggies": "Black Olives, Mushrooms, Tomato",
-          "sauce": "Ranch, Garlic Rub, Olive Oil",
-          "quantity": 1
-        },
-        {
-          "cheese": "no cheese",
-          "meat": "no meat",
-          "crust size": "11",
           "veggies": "no veggies",
-          "sauce": "no sauce",
+          "sauce": "Ranch",
           "quantity": 1
         }
       ],
-      "AMZN ID": "",
+      "AMZN ID": "amzn1.ask.account.AGX2CNUOPLHI3SAKVMAVLFZFRIQ3SHICA22Y4CZ7X244IARSTEGGAJFUH6UZVGKTIMWXP5NZXYEXA4VEF62NSJFC4NMMD7ZW6U6YLDUFY7JE4R6RUUKSCQBCIC3NAZWKUFNFPNDQ3LEKWARZR2GLCMJ57QGPRMPSWGDHHNGZYLOBVVENXP7JJPQWEZHNAOSQB2NI2HQQNHZSA3I",
       "order ID": ""
     }
 

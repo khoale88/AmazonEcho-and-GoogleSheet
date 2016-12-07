@@ -120,7 +120,8 @@ def handle_pizza_sauce(intent,session):
         elif ('all sauce' in sauce_response.lower()):
             selected_sauce = ', '.join(s['name'] for s in session_attributes['menu']['sauce'])
         else:
-            selected_sauce = sauce_response
+            selected_sauce = ', '.join(s['name'] for s in session_attributes['menu']['sauce'] 
+                                                if s['name'].lower() in sauce_response.lower())
         session_attributes['current_pizza']['sauce'] = selected_sauce
 
     #instruct to cheese
@@ -166,7 +167,8 @@ def handle_pizza_cheese(intent,session):
         elif ('all cheese' in cheese_response.lower()):
             selected_cheese = ', '.join(c['name'] for c in session_attributes['menu']['cheese'])
         else:
-            selected_cheese = cheese_response
+            selected_cheese = ', '.join(c['name'] for c in session_attributes['menu']['cheese'] 
+                                                if c['name'].lower() in cheese_response.lower())
         session_attributes['current_pizza']['cheese'] = selected_cheese
 
     #instruct to meat
@@ -199,7 +201,7 @@ def handle_pizza_meat(intent,session):
         'cheese' not in session_attributes['current_pizza']):
         return handle_pizza_cheese(intent,session)
 
-    if card_title not in intent['slot']:
+    if card_title not in intent['slots']:
         if 'meat' not in session_attributes['current_pizza']:
             return handle_pizza_cheese(intent,session)
     else:
@@ -211,7 +213,8 @@ def handle_pizza_meat(intent,session):
         elif ('all meat' in meat_response.lower()):
             selected_meat = ', '.join(m['name'] for m in session_attributes['menu']['meat'])
         else:
-            selected_meat = meat_response
+            selected_meat = ', '.join(m['name'] for m in session_attributes['menu']['meat']
+                                                if m['name'].lower() in meat_response.lower())
         session_attributes['current_pizza']['meat'] = selected_meat
 
     #instruct to veggies
@@ -253,7 +256,8 @@ def handle_pizza_veggies(intent,session):
     elif ('all veggies' in veggies_response.lower()):
         selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies'])
     else:
-        selected_veggies = veggies_response
+        selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies']
+                                                if v['name'].lower() in veggies_response.lower())
     session_attributes['current_pizza']['veggies'] = selected_veggies
 
     #add quantity for testing
