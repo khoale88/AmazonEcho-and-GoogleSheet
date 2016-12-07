@@ -71,8 +71,6 @@ def post():
 
     for pizza in pizzas:
         value = []
-        name = customer["name"]
-        phno = customer["phone_number"]
 
         value.append(pizza["crust size"])
         value.append(pizza["cheese"])
@@ -98,7 +96,7 @@ def post():
     for n in range(0, len(pizzas)):
         values.append([ORDERNUMBER])
 
-    saveOrderId(len(pizzas), data["AMZN ID"])
+    saveOrderId(len(pizzas), data["AMZN ID"], customer["name"], customer["phone_number"], customer["address"])
 
     start = INDEX - len(pizzas)
     end = INDEX -1
@@ -190,7 +188,7 @@ def orderPrice(quantity):
     return total
 
 
-def saveOrderId(length, amazonId):
+def saveOrderId(length, amazonId, customerName, phoneNumber, address):
     start = INDEX - length
     end = INDEX -1
 
@@ -204,43 +202,20 @@ def saveOrderId(length, amazonId):
 
     global ORDERNUMBER, TRACK
 
-    body ={
-        "valueInputOption": "USER_ENTERED",
-        "data": [
-            {
-                "range": 'Track!A' + '%s' % TRACK,
-                #"majorDimension": "ROWS",
-                "values": [
-                    [ORDERNUMBER]
-                ]
-            },
-            {
-                "range": 'Track!B' + '%s' % TRACK,
-                #"majorDimension": "ROWS",
-                "values": [
-                    [amazonId]
-                ]
-            },
-            {
-                "range": 'Track!C' + '%s' % TRACK,
-                #"majorDimension": "ROWS",
-                "values": [
-                    ["Submitted"]
-                ]
-            },
-            {
-                "range": 'Track!D' + '%s' % TRACK,
-                # "majorDimension": "ROWS",
-                "values": [
-                    [total]
-                ]
-            }
+    value = []
 
-        ]
-    }
+    value.append(ORDERNUMBER)
+    value.append(amazonId)
+    value.append("Submitted")
+    value.append(total)
+    value.append(customerName)
+    value.append(phoneNumber)
+    value.append(address)
 
-    result2 = service.spreadsheets().values().batchUpdate(
-        spreadsheetId=googleSheetId,body=body).execute()
+    rangeName = 'Track!A' + '%s' % TRACK + ':' + 'G' + '%s' % TRACK
+
+    result = service.spreadsheets().values().update(spreadsheetId=googleSheetId, range=rangeName,
+            valueInputOption="USER_ENTERED", body={'values': [value]}).execute()
 
     global start_time
 
@@ -249,7 +224,7 @@ def saveOrderId(length, amazonId):
     ORDERNUMBER += 1
     TRACK += 1
 
-    return jsonify(result2)
+    return jsonify(result)
 
 
 @app.route('/order/<int:orderid>/status', methods=['GET'])
@@ -257,8 +232,8 @@ def checkStatus(orderid):
     orderIDRange = 'Track!A2:A' + '%s' % TRACK
     orderStatusRange = 'Track!C2:C' + '%s' % TRACK
 
-    if(orderid > ORDERNUMBER):
-        return jsonify({"error": "Order Id not found"})
+    if(orderid >= ORDERNUMBER):
+        return jsonify({"error": "Order Id not found"}), 404
 
     range_names = [
         orderIDRange, orderStatusRange
@@ -287,8 +262,10 @@ def checkStatus(orderid):
         update = 'Processing'
     elif elapsed_time > 180 and elapsed_time < 600:
         update = 'Ready'
-    elif elapsed_time > 600:
+    elif elapsed_time > 600 and elapsed_time < 900:
         update = 'Out for delivery'
+    elif elapsed_time > 900:
+        update = 'Delivered'
 
     foo = int(orderid) + 1
     updateOrder = service.spreadsheets().values().update(
@@ -298,7 +275,7 @@ def checkStatus(orderid):
     if status != "":
         return jsonify({"status": update})
 
-    return jsonify({"error": "Order not found"})
+    return jsonify({"error": "Order not found"}), 404
 
 @app.route('/orders/<string:amazonId>', methods=['GET'])
 def getOrdersAmazonId(amazonId):
@@ -321,10 +298,10 @@ def getOrdersAmazonId(amazonId):
         if order[1] == str(amazonId) and order[2] != "Delivered":
             searchResult.append(order)
 
-    if searchResult != "":
+    if len(searchResult) > 0:
         return jsonify({"orders": searchResult})
 
-    return jsonify({"error": "Order not found"})
+    return jsonify({"error": "Order not found"}), 404
 
 
 if __name__ == "__main__":
