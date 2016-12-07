@@ -1,12 +1,20 @@
 {
     "menu":{},
-    "current_pizza":{},
+    "current_pizza":{
+        "crust size" : "",
+        "sauce":"",
+        "cheese":"",
+        "meat":"",
+        "veggies":"",
+        "quantity":""
+    },
     "order":{
         "pizzas":[],
         "customer":{
             "name":"",
             "phone_number":""
         },
-        "order ID":""
+        "order ID":"",
+        "AMZN ID":""
     }
 }
