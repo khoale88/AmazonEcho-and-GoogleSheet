@@ -1,14 +1,7 @@
 {
     "menu":{},
     "previous state":"welcome",
-    "current_pizza":{
-        "crust size" : "",
-        "sauce":"",
-        "cheese":"",
-        "meat":"",
-        "veggies":"",
-        "quantity":""
-    },
+    "current_pizza":{},
     "order":{
         "pizzas":[],
         "customer":{

@@ -8,7 +8,7 @@ http://amzn.to/1LGWsLG
 """
 
 from __future__ import print_function
-from pizza_functions import build_response, build_speechlet_response,getMenu
+from pizza_functions import build_response, build_speechlet_response,getMenu,postOrder
 import json
     
 # --------------- Functions that control the skill's behavior ------------------
@@ -42,6 +42,7 @@ def handle_place_order(intent,session):
     if('order' not in session_attributes):  
         session_attributes = json.load(open("data_schema.json"))
 
+    del session_attributes['current_pizza']
     session_attributes['current_pizza'] = {}
 
     #instruct to size
@@ -58,7 +59,7 @@ def handle_pizza_size(intent,session):
     card_title = 'PizzaSize'
 
     #update pizza size
-    session_attributes['current_pizza']['crust size'] = intent['slots'][card_title]['value']
+    session_attributes['current_pizza']['crust size'] = size = intent['slots'][card_title]['value']
     #check valid size
     if session_attributes['current_pizza']['crust size'] != '6' and session_attributes['current_pizza']['crust size'] != '11':
         return handle_place_order(intent,session)
@@ -66,14 +67,16 @@ def handle_pizza_size(intent,session):
     #instruct to sauce
     #only get sauce if it is the 1st time in this session - not yet in the menu
     if('sauce' not in session_attributes['menu']):
-        session_attributes['menu']['sauce'] = getMenu('sauce') 
+        session_attributes['menu']['sauce'] = {}
+        session_attributes['menu']['sauce'] = getMenu('sauce')
     
     #build sauce speech
-    sauce_speech = "Please let me know which of the following sauces would you like to Add to base,"
-    sauce_speech += str(', '.join(session_attributes['menu']['sauce'])) + ", All sauce, or No sauce"
+    sauce_speech = "Please let me know which of the following sauces would you like to Add to base, "
+    for s in session_attributes['menu']['sauce']:
+        sauce_speech += "%s for %s dollar, " %(str(s['name']),str(s['price']))
 
     #build output
-    speech_output = "You have choosen pizza of %s inches" %(session_attributes['current_pizza']['crust size'])
+    speech_output = "You have choosen pizza of %s inches. " %(session_attributes['current_pizza']['crust size'])
     speech_output += sauce_speech
 
     reprompt_text = "I did not receive a response, " 
@@ -92,7 +95,7 @@ def handle_pizza_sauce(intent,session):
 
     card_title = 'PizzaSauce'
 
-    #get the sauce response out
+    #check if the slot there
     if card_title in intent['slots']:
         #get sauce out
         sauce_response = intent['slots'][card_title]['value']
@@ -100,7 +103,7 @@ def handle_pizza_sauce(intent,session):
         if ('no sauce' in sauce_response.lower()):
             selected_sauce = 'no sauce'
         elif ('all sauce' in sauce_response.lower()):
-            selected_sauce = ', '.join(session_attributes['menu']['sauce'])
+            selected_sauce = ', '.join(s['name'] for s in session_attributes['menu']['sauce'])
         else:
             selected_sauce = sauce_response
         session_attributes['current_pizza']['sauce'] = selected_sauce
@@ -108,11 +111,13 @@ def handle_pizza_sauce(intent,session):
     #instruct to cheese
     #only get chees if it is not in the menu
     if('cheese' not in session_attributes['menu']):
+        session_attributes['menu']['cheese'] = {}
         session_attributes['menu']['cheese'] = getMenu('cheese')
 
     #cheese speech, need to add all cheese?
     cheese_speech = "Please let me know which of the following cheeses would you like to Add, "
-    cheese_speech += ', '.join(session_attributes['menu']['cheese']) + ", All Cheese, or No Cheese"
+    for c in session_attributes['menu']['cheese']:
+        cheese_speech += "%s for %s dollar, " %(str(c['name']),str(c['price']))
 
     #build output
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['sauce'])
@@ -140,7 +145,7 @@ def handle_pizza_cheese(intent,session):
         if ('no cheese' in cheese_response.lower()):
             selected_cheese = 'no cheese'
         elif ('all cheese' in cheese_response.lower()):
-            selected_cheese = ', '.join(session_attributes['menu']['cheese'])
+            selected_cheese = ', '.join(c['name'] for c in session_attributes['menu']['cheese'])
         else:
             selected_cheese = cheese_response
         session_attributes['current_pizza']['cheese'] = selected_cheese
@@ -148,11 +153,13 @@ def handle_pizza_cheese(intent,session):
     #instruct to meat
     #only get meat if it is not in the menu
     if('meat' not in session_attributes['menu']):
-        session_attributes['menu']['meat'] = getMenu('meatToppings')
+        session_attributes['menu']['meat'] = {}
+        session_attributes['menu']['meat'] = getMenu('meat')
 
     #build meat speech
     meat_speech = "Please let me know which of the following meat would you like to Add, "
-    meat_speech += ', '.join(session_attributes['menu']['meat']) + ", All Meat, or No Meat"
+    for m in session_attributes['menu']['meat']:
+        meat_speech += "%s for %s dollar, " %(str(m['name']),str(m['price']))
 
     #build output
     speech_output = "You have choosen %s  on pizza base. " %(session_attributes['current_pizza']['cheese'])
@@ -181,7 +188,7 @@ def handle_pizza_meat(intent,session):
         if ('no meat' in meat_response.lower()):
             selected_meat = 'no meat'
         elif ('all meat' in meat_response.lower()):
-            selected_meat = ', '.join(session_attributes['menu']['meat'])
+            selected_meat = ', '.join(m['name'] for m in session_attributes['menu']['meat'])
         else:
             selected_meat = meat_response
         session_attributes['current_pizza']['meat'] = selected_meat
@@ -189,11 +196,14 @@ def handle_pizza_meat(intent,session):
     #instruct to veggies
     #only get veggies if it is not in the menu
     if('veggies' not in session_attributes['menu']):
-        session_attributes['menu']['veggies'] = getMenu('nonMeatToppings')
+        session_attributes['menu']['veggies'] = {}
+        session_attributes['menu']['veggies'] = getMenu('veggies')
 
     #build veggies instructions
     veggies_speech = "Please let me know which of the following veggies would you like to Add, "
-    veggies_speech += ", ".join(session_attributes['menu']['veggies']) + ', all veggies, or no veggies'
+    for v in session_attributes['menu']['veggies']:
+        veggies_speech += "%s for %s dollar, " %(str(v['name']),str(v['price']))
+
     #build output
     speech_output = "You have choosen %s  on pizza base. " %(session_attributes['current_pizza']['meat'])
     speech_output += veggies_speech
@@ -221,7 +231,7 @@ def handle_pizza_veggies(intent,session):
         if ('no veggies' in veggies_response.lower()):
             selected_veggies = 'no veggies'
         elif ('all veggies' in veggies_response.lower()):
-            selected_veggies = ', '.join(session_attributes['menu']['veggies'])
+            selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies'])
         else:
             selected_veggies = veggies_response
         session_attributes['current_pizza']['veggies'] = selected_veggies
@@ -230,10 +240,10 @@ def handle_pizza_veggies(intent,session):
     session_attributes['current_pizza']['quantity'] = 1
 
     #finish this pizza
-    #current_pizza = session_attributes['current_pizza']
+    current_pizza = session_attributes['current_pizza']
     pizzas = session_attributes['order']['pizzas']
     pizzas.append(session_attributes['current_pizza'])
-    #session_attributes['current_pizza'] = {}
+    
 
     #instruct to next
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['veggies'])
@@ -241,6 +251,9 @@ def handle_pizza_veggies(intent,session):
 
     reprompt_text = "I did not receive a response, " \
                     "Do you want to add another pizza?"    
+
+    #del session_attributes['current_pizza']
+    #session_attributes['current_pizza'] = {}
 
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -263,7 +276,7 @@ def handle_session_end_request(intent, session):
     user = session.get('user',{})
     session_attributes['order']['AMZN ID'] = user.get('userId','')
 
-    order_number = 1234
+    order_number = postOrder(session_attributes['order'])
     order_price = 15.76
     dollar = int(order_price)
     cents = int((order_price - dollar)*100)
@@ -271,7 +284,7 @@ def handle_session_end_request(intent, session):
     #post order, get order ID and price_______________________________________________________________
     speech_output = "You have order %d pizza."%(size)
     speech_output += pizzas_speech
-    speech_output +="Your order number is: %d." %(order_number)
+    speech_output +="Your order number is: %d." %(int(order_number))
     speech_output +="your order price is %d dollars and %d cents," %(dollar,cents)
     speech_output +="Thank you for using MOD Pizza automated pizza ordering system, " \
                     "Have a nice day! "

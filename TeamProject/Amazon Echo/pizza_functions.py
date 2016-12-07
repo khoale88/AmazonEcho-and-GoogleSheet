@@ -18,6 +18,12 @@ def getMenu(section):
             output.append(item)
         return output
 
+def postOrder(order):
+    endpoint = "/Order"
+    r = requests.post(url = host+endpoint, json = order)
+    if r.status_code == 200:
+        return "12345"
+
 
 # --------------- Helpers that build all of the responses ----------------------
 
