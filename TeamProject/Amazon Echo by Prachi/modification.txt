@@ -1,0 +1,23 @@
+
+
+
+ speech_output += "If you want to add another pizza, please respond by saying,
+    Add pizza, If you don't want to add pizza, please resond by saying, finish order"
+
+    reprompt_text = "I did not receive a response, " \
+                   "If you want to add another pizza, please respond by saying,
+    Add pizza, If you don't want to add pizza, please resond by saying, finish order"    
+
+AddAnotherPizzaIntent Add another pizza
+AddAnotherPizzaIntent Yes i would like to add another pizza
+AddAnotherPizzaIntent Add pizza
+AddAnotherPizzaIntent Add one pizza
+AddAnotherPizzaIntent Add a pizza
+AddAnotherPizzaIntent Add another pizza
+AddAnotherPizzaIntent Yeah i would like to add another pizza
+
+DoNotAddPizzaIntent finish order
+DoNotAddPizzaIntent finish
+DoNotAddPizzaIntent Don't add pizza
+DoNotAddPizzaIntent finish ordering
+DoNotAddPizzaIntent finish it
