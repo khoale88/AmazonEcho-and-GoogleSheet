@@ -4,7 +4,7 @@ import json
 
 # --------------Helper that help to get menu items---------------------------
 host = "http://35.164.41.209:8082"
-
+#host = '"http://localhost:8082'
 def getMenu(section):
     endpoint = "/menu/"+section
     r = requests.get(url = host+endpoint)
@@ -48,14 +48,19 @@ def postOrder(order):
     print r.status_code
     print r.content
 
-ids = [1, 3, 5]
-
+ids = [1]
 def getOrderStatus(orderIds):
   status = []
   for orderId in orderIds:
     endpoint = '/order/%s/status'%(orderId)
     r = requests.get(url = host+endpoint)
+    print 'check order 1'
+    print '#################raw input##############'
+    print r
+    print r.content
     if r.status_code == 200:
+      print '#############status 200################'
+      print r.content
       st = {}
       st['orderId'] = orderId
       st['status'] = str(json.loads(r.content)['status'])
@@ -65,14 +70,25 @@ def getOrderStatus(orderIds):
 def autoOrderStatus(AMZNId):
   endpoint = '/orders/%s'%(AMZNId)
   r = requests.get(url = host+endpoint)
-  result = ["aaa"]
+  result = []
+  print 'check AMZN ID'
+  print '==============raw input================='
+  print r
+  print r.content
   if r.status_code == 200:
+    print '==============status 200================='
+    print r.content
     for orderStatus in json.loads(r.content)['orders']:
       if orderStatus[2] != 'delivered':
         result.append([str(orderStatus[x]) for x in [0,2]])
   return result
 
-print autoOrderStatus('sdkjfhsdf')
+
+print ("\n\n###########ORDER ID##############")
+print getOrderStatus(ids)
+print ('\n\n')
+print ("============AMZN ID==============")
+print autoOrderStatus(data["AMZN ID"])
 
 
 

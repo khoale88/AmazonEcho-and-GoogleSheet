@@ -20,7 +20,7 @@ def get_welcome_response():
     session_attributes = {}
 
     card_title = "Welcome"
-    speech_output = "Hi, Welcome to Mod Pizza, " \
+    speech_output = "Hi, Welcome to Pizza ordering system, " \
                     "Please let me know in few words if you would like to place order or track existing order, " \
                     " by saying, place order, or, track order. " 
 
@@ -96,7 +96,8 @@ def handle_pizza_size(intent,session):
     sauce_speech = "Please let me know which of the following sauces would you like to Add to base, "
     for s in session_attributes['menu']['sauce']:
         sauce_speech += "%s for %s dollar, " %(str(s['name']),str(s['price']))
-
+    sauce_speech +=  "all sauce, or no sauce, "
+    
     #build output
     speech_output = "You have choosen pizza of %s inches. " %(session_attributes['current_pizza']['crust size'])
     speech_output += sauce_speech
@@ -144,6 +145,7 @@ def handle_pizza_sauce(intent,session):
     cheese_speech = "Please let me know which of the following cheeses would you like to Add, "
     for c in session_attributes['menu']['cheese']:
         cheese_speech += "%s for %s dollar, " %(str(c['name']),str(c['price']))
+    cheese_speech += "All cheese, or no cheese, "
 
     #build output
     speech_output = "You have choosen %s on pizza base. " %(session_attributes['current_pizza']['sauce'])
@@ -191,6 +193,7 @@ def handle_pizza_cheese(intent,session):
     meat_speech = "Please let me know which of the following meat would you like to Add, "
     for m in session_attributes['menu']['meat']:
         meat_speech += "%s for %s dollar, " %(str(m['name']),str(m['price']))
+    meat_speech += "all meat, or no meat, "
 
     #build output
     speech_output = "You have choosen %s  on pizza base. " %(session_attributes['current_pizza']['cheese'])
@@ -237,6 +240,7 @@ def handle_pizza_meat(intent,session):
     veggies_speech = "Please let me know which of the following veggies would you like to Add, "
     for v in session_attributes['menu']['veggies']:
         veggies_speech += "%s for %s dollar, " %(str(v['name']),str(v['price']))
+    veggies_speech += "all veggies, or no veggies"
 
     #build output
     speech_output = "You have choosen %s  on pizza base. " %(session_attributes['current_pizza']['meat'])
@@ -259,16 +263,20 @@ def handle_pizza_veggies(intent,session):
         return handle_pizza_meat(intent,session)
 
     #get the veggies out
-    veggies_response = intent['slots'][card_title]['value']
-    #update veggies
-    if ('no veggies' in veggies_response.lower()):
-        selected_veggies = 'no veggies'
-    elif ('all veggies' in veggies_response.lower()):
-        selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies'])
+    if card_title not in intent['slots']:
+        if 'veggies' not in session_attributes['current_pizza']:
+            return handle_pizza_meat(intent,session)
     else:
-        selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies']
+        veggies_response = intent['slots'][card_title]['value']
+        #update veggies
+        if ('no veggies' in veggies_response.lower()):
+            selected_veggies = 'no veggies'
+        elif ('all veggies' in veggies_response.lower()):
+            selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies'])
+        else:
+            selected_veggies = ', '.join(v['name'] for v in session_attributes['menu']['veggies']
                                                 if v['name'].lower() in veggies_response.lower())
-    session_attributes['current_pizza']['veggies'] = selected_veggies
+        session_attributes['current_pizza']['veggies'] = selected_veggies
 
     #add quantity for testing
     session_attributes['current_pizza']['quantity'] = 1
@@ -285,7 +293,7 @@ def handle_pizza_veggies(intent,session):
 
     reprompt_text = "I did not receive a response, " \
                     "If you want to add another pizza, please respond by saying, Add pizza, "\
-                    "If you don't want to add pizza, please resond by saying, finish order." 
+                    "If you don't want to add pizza, please resond by saying, finish order. " 
 
     #del session_attributes['current_pizza']
     #session_attributes['current_pizza'] = {}
@@ -302,10 +310,9 @@ def handle_do_not_add(intent,session):
         return handle_pizza_veggies(intent, session)
     card_title = "DoNotAddPizza"
     
-    speech_output = "May I have your name and address before we place your order?"\
-                    "you can just speak your address without name"
-    reprompt_text = "I'm waiting for your name and address!"\
-                    'you can just speak your address without name'
+    speech_output = "May I have your name before we place your order?"
+    reprompt_text = "I'm waiting for your name"
+
     # Setting this to true ends the session and exits the skill.
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -332,7 +339,7 @@ def handle_name(intent,session):
     
     speech_output = "Hi %s, now tell me your address, we will deliver the pizza to you" %(session_attributes['order']['customer']['name'])
                     
-    reprompt_text = "I'm waiting for your address"
+    reprompt_text = "I'm waiting for your address. "
 
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -344,17 +351,18 @@ def handle_address(intent,session):
 
     addr = ""
     for slot in ['CustAddress', 'CustStreet', 'City']:
-        if 'value' in intent['slots'][slot]:
+        if slot in intent['slots'] and 'value' in intent['slots'][slot]:
             addr += intent['slots'][slot]['value']
     session_attributes['order']['customer']['address'] = addr
     #check if valid city
-    if 'value' in intent['slots']['City']:
+
+    if 'City' in intent['slots'] and  'value' in intent['slots']['City']:
         return finish_order(intent,session)
     
     #invalid
-    speech_output = "please input a valid address with valid city!"\
-                    "What is your address again?"
-    reprompt_text = "I'm waiting for your address"
+    speech_output = "please input a valid address with valid city! "\
+                    "What is your address again? "
+    reprompt_text = "I'm waiting for your address. "
 
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -369,7 +377,7 @@ def finish_order(intent,session):
     for pizza in session_attributes['order']['pizzas'] :
         size += int(pizza['quantity'])
         #quantity, size, sauce, cheese, meat, veggies
-        pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s."\
+        pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s. "\
                             %(pizza['quantity'],pizza['crust size'],pizza['sauce'],pizza['cheese'],pizza['meat'],pizza['veggies'])
     
     user = session.get('user',{})
@@ -389,7 +397,7 @@ def finish_order(intent,session):
     speech_output += pizzas_speech
     speech_output +="Your order number is: %d. " %(int(orderId))
     speech_output +="Your order price is %d dollars and %d cents. " %(dollar,cents)
-    speech_output +="Thank you for using MOD Pizza automated pizza ordering system, " \
+    speech_output +="Thank you for using our Pizza ordering system, " \
                     "Have a nice day! "
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
@@ -409,7 +417,7 @@ def handle_add(intent,session):
 
     crust_speech =  "Please let me know which crust size would like to order, "
     for cr in session_attributes['menu']['crust size']:
-        crust_speech += "%s inches for %s dollar" %(cr['name'],cr['price'])
+        crust_speech += "%s inches for %s dollar, " %(cr['name'],cr['price'])
 
     #instruct to size
     speech_output = "You have choosen to add another pizza. " + crust_speech
@@ -429,7 +437,7 @@ def handle_session_end_request(intent, session):
     if 'order' in session_attributes:
         cancel_speech = "you have chosen to stop your order, your order will not be placed. "
 
-    speech_output =cancel_speech + "Thank you for using MOD Pizza automated pizza ordering system, " \
+    speech_output =cancel_speech + "Thank you for using our pizza ordering system, " \
                     "Have a nice day! "
     
 
@@ -453,10 +461,10 @@ def track_order(intent,session):
     status = autoOrderStatus(AMZNId)
     if len(status) == 0:
         speech_output = "We found 0 order associated with your Amazon Account. " \
-                        "Please let me know your order number"
+                        "Please let me know your order number in format by saying, track order number example, track ten, "
 
         reprompt_text = "I did not receive a response, " \
-                        "Please let me know your order number"
+                        "Please let me know your order number by saying, track order number example, track ten, "
 
         should_end_session = False
         return build_response(session_attributes, build_speechlet_response(
@@ -486,7 +494,8 @@ def return_order_status(intent,session):
     speech_output = "We found %d orders. " %(len(status))
     for stt in status:
         speech_output += "Status of Order %d  is %s, "  %(stt['orderId'],stt['status'])
-        speech_output += "Thank you for choosing us!"
+    
+    speech_output += "Thank you for choosing us!"
     
     reprompt_text = None
                      
