@@ -228,11 +228,13 @@ def saveOrderId(length, amazonId, customerName, phoneNumber, address):
 
 
 @app.route('/order/<int:orderid>/status', methods=['GET'])
-def checkStatus(orderid):    
+def checkStatus(orderid):
     orderIDRange = 'Track!A2:A' + '%s' % TRACK
     orderStatusRange = 'Track!C2:C' + '%s' % TRACK
 
-    if(orderid >= ORDERNUMBER):
+    global ORDERNUMBER
+
+    if int(orderid) > int(ORDERNUMBER):
         return jsonify({"error": "Order Id not found"}), 404
 
     range_names = [
@@ -246,25 +248,25 @@ def checkStatus(orderid):
 
     orderIds.append(allOrders["valueRanges"][0]["values"])
 
-    count = 1
+    count = 0
     for order in orderIds[0]:
         count += 1
         if str(orderid) == order[0][0]:
             break
-
+            
     status = allOrders["valueRanges"][1]["values"][count-1][0]
 
     elapsed_time = time.time() - start_time[orderid]
 
-    if elapsed_time > 0 and elapsed_time < 60:
+    if elapsed_time > 0 and elapsed_time < 15:
         update = status
-    elif elapsed_time > 60 and elapsed_time < 180:
+    elif elapsed_time > 15 and elapsed_time < 60:
         update = 'Processing'
-    elif elapsed_time > 180 and elapsed_time < 600:
+    elif elapsed_time > 60 and elapsed_time < 90:
         update = 'Ready'
-    elif elapsed_time > 600 and elapsed_time < 900:
+    elif elapsed_time > 90 and elapsed_time < 120:
         update = 'Out for delivery'
-    elif elapsed_time > 900:
+    elif elapsed_time > 120:
         update = 'Delivered'
 
     foo = int(orderid) + 1
@@ -296,6 +298,7 @@ def getOrdersAmazonId(amazonId):
     orderIds.append(allOrders["valueRanges"][0]["values"])
     for order in orderIds[0]:
         if order[1] == str(amazonId) and order[2] != "Delivered":
+            checkStatus(int(order[0]))
             searchResult.append(order)
 
     if len(searchResult) > 0:
