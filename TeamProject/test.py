@@ -65,7 +65,8 @@ def getOrderStatus(orderIds):
 def autoOrderStatus(AMZNId):
   endpoint = '/orders/%s'%(AMZNId)
   r = requests.get(url = host+endpoint)
-  result = ["aaa"]
+  result = [""]
+  print r.content
   if r.status_code == 200:
     for orderStatus in json.loads(r.content)['orders']:
       if orderStatus[2] != 'delivered':
