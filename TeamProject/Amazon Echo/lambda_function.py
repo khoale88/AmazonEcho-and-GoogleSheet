@@ -293,7 +293,7 @@ def handle_pizza_veggies(intent,session):
 
     reprompt_text = "I did not receive a response, " \
                     "If you want to add another pizza, please respond by saying, Add pizza, "\
-                    "If you don't want to add pizza, please resond by saying, finish order." 
+                    "If you don't want to add pizza, please resond by saying, finish order. " 
 
     #del session_attributes['current_pizza']
     #session_attributes['current_pizza'] = {}
@@ -310,10 +310,9 @@ def handle_do_not_add(intent,session):
         return handle_pizza_veggies(intent, session)
     card_title = "DoNotAddPizza"
     
-    speech_output = "May I have your name and address before we place your order?"\
-                    "you can just speak your address without name"
-    reprompt_text = "I'm waiting for your name and address!"\
-                    'you can just speak your address without name'
+    speech_output = "May I have your name before we place your order?"
+    reprompt_text = "I'm waiting for your name"
+
     # Setting this to true ends the session and exits the skill.
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -340,7 +339,7 @@ def handle_name(intent,session):
     
     speech_output = "Hi %s, now tell me your address, we will deliver the pizza to you" %(session_attributes['order']['customer']['name'])
                     
-    reprompt_text = "I'm waiting for your address"
+    reprompt_text = "I'm waiting for your address. "
 
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -352,17 +351,18 @@ def handle_address(intent,session):
 
     addr = ""
     for slot in ['CustAddress', 'CustStreet', 'City']:
-        if 'value' in intent['slots'][slot]:
+        if slot in intent['slots'] and 'value' in intent['slots'][slot]:
             addr += intent['slots'][slot]['value']
     session_attributes['order']['customer']['address'] = addr
     #check if valid city
-    if 'value' in intent['slots']['City']:
+
+    if 'City' in intent['slots'] and  'value' in intent['slots']['City']:
         return finish_order(intent,session)
     
     #invalid
-    speech_output = "please input a valid address with valid city!"\
-                    "What is your address again?"
-    reprompt_text = "I'm waiting for your address"
+    speech_output = "please input a valid address with valid city! "\
+                    "What is your address again? "
+    reprompt_text = "I'm waiting for your address. "
 
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
@@ -377,7 +377,7 @@ def finish_order(intent,session):
     for pizza in session_attributes['order']['pizzas'] :
         size += int(pizza['quantity'])
         #quantity, size, sauce, cheese, meat, veggies
-        pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s."\
+        pizzas_speech += " %s of %s inch pizza with %s, %s, %s, %s. "\
                             %(pizza['quantity'],pizza['crust size'],pizza['sauce'],pizza['cheese'],pizza['meat'],pizza['veggies'])
     
     user = session.get('user',{})
@@ -417,7 +417,7 @@ def handle_add(intent,session):
 
     crust_speech =  "Please let me know which crust size would like to order, "
     for cr in session_attributes['menu']['crust size']:
-        crust_speech += "%s inches for %s dollar" %(cr['name'],cr['price'])
+        crust_speech += "%s inches for %s dollar, " %(cr['name'],cr['price'])
 
     #instruct to size
     speech_output = "You have choosen to add another pizza. " + crust_speech
@@ -461,10 +461,10 @@ def track_order(intent,session):
     status = autoOrderStatus(AMZNId)
     if len(status) == 0:
         speech_output = "We found 0 order associated with your Amazon Account. " \
-                        "Please let me know your order number in format by saying, track order number example, track ten"
+                        "Please let me know your order number in format by saying, track order number example, track ten, "
 
         reprompt_text = "I did not receive a response, " \
-                        "Please let me know your order number by saying, track order number example, track ten"
+                        "Please let me know your order number by saying, track order number example, track ten, "
 
         should_end_session = False
         return build_response(session_attributes, build_speechlet_response(
