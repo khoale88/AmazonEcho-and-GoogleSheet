@@ -37,13 +37,13 @@ def getOrderStatus(orderIds):
   return status
 
 def autoOrderStatus(AMZNId):
-  endpoint = '/orders/%s'%(AMZNId)
-  r = requests.get(url = host+endpoint)
-  if r.status_code == 200:
+    endpoint = '/orders/%s'%(AMZNId)
+    r = requests.get(url = host+endpoint)
     result = []
-    for orderStatus in json.loads(r.content)['orders']:
-      if orderStatus[2] != 'delivered':
-        result.append([str(orderStatus[x]) for x in [0,2]])
+    if r.status_code == 200:
+        for orderStatus in json.loads(r.content)['orders']:
+            if orderStatus[2] != 'delivered':
+                result.append([str(orderStatus[x]) for x in [0,2]])
     return result
 
 # --------------- Helpers that build all of the responses ----------------------
